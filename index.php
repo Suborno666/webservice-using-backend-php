@@ -11,7 +11,8 @@ require_once __DIR__.'/Models/userTable.php';
 $method = $_SERVER['REQUEST_METHOD'];
 $serverUri = $_SERVER['REQUEST_URI'];
 $host = $_SERVER['HTTP_HOST'];
-$url = "http://$host$serverUri";
+
+// $url = "http://$host$serverUri";
 
 $url_name = '/new_webservice';
 
@@ -37,7 +38,7 @@ switch ($method) {
         break;
 
     case "POST":
-        if ($serverUri === "/new_webservice/user/one") {
+        if ($serverUri === "$url_name/user/one") {
             echo "Creating a new user...";
         } else {
             echo "Invalid POST route.";
@@ -45,7 +46,7 @@ switch ($method) {
         break;
 
     case "PUT":
-        if ($serverUri === "/new_webservice/user/put") {
+        if ($serverUri === "$url_name/user/put") {
             echo "Updating user...";
         } else {
             echo "Invalid PUT route.";
@@ -53,7 +54,7 @@ switch ($method) {
         break;
 
     case "DELETE":
-        if ($serverUri === "/new_webservice/user/del") {
+        if ($serverUri === "$url_name/user/del") {
             echo "Deleting user...";
         } else {
             echo "Invalid DELETE route.";

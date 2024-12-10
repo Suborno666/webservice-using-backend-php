@@ -1,0 +1,6 @@
+# Example .gitignore
+vendor/
+.env
+*.log
+*.cache
+

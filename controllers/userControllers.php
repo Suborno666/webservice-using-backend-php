@@ -1,5 +1,8 @@
 <?php
+namespace Controller;
 
-require __DIR__.'/../config/conn.php';
+require_once __DIR__.'/../config/conn.php';
 
-$conn = new Connection();
+use Config\Connection as Connection;
+
+//start from here

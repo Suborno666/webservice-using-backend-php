@@ -15,6 +15,7 @@ class UserTable{
             id INT(6) AUTO_INCREMENT PRIMARY KEY,
             username VARCHAR(50),
             email VARCHAR(50),
+            password VARCHAR(50),
             createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
             updatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
             )";

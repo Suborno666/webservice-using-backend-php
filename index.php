@@ -14,9 +14,7 @@ $method = $_SERVER['REQUEST_METHOD'];
 $serverUri = $_SERVER['REQUEST_URI'];
 $host = $_SERVER['HTTP_HOST'];
 
-$arr_url   = explode('/',$serverUri);
-
-$id = (int)$arr_url[3];
+$id = isset($_GET['id'])?$_GET['id']:'';
 
 $url_name = '/new_webservice';
 
@@ -28,33 +26,33 @@ $Users = new Users($conn);
 switch ($method) {
     case "GET":
         if ($serverUri === "$url_name/user/all" ) {
-            echo "Fetching all users...<br>";
+            
             $Users->getAllUsers();
 
         }else if($serverUri === "$url_name/createTable"){
+            
             $userTable = new userTable($conn);
-            if($userTable){
-                echo 'Table Created';
-            }
-        } else if($serverUri === "$url_name/user/$id"){
-            echo $id."<br>";
+        
+        } else if($serverUri === "$url_name/user?id=$id"){
+        
             $Users->getOneUser($id);
+        
         } 
         else {
-            echo "Invalid GET route.";
+            // echo "Invalid GET route.";
         }
         break;
 
     case "POST":
         if ($serverUri === "$url_name/user/one") {
-            echo "Creating a new user...";
+            $Users->createUser();
         } else {
             echo "Invalid POST route.";
         }
         break;
 
     case "PUT":
-        if ($serverUri === "$url_name/user/put") {
+        if ($serverUri === "$url_name/user/put?id=$id") {
             echo "Updating user...";
         } else {
             echo "Invalid PUT route.";
@@ -62,10 +60,8 @@ switch ($method) {
         break;
 
     case "DELETE":
-        if ($serverUri === "$url_name/user/del") {
-            echo "Deleting user...";
-        } else {
-            echo "Invalid DELETE route.";
+        if ($serverUri === "$url_name/user/del?id=$id") {
+            $Users->deleteUser($id);
         }
         break;
 

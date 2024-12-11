@@ -16,26 +16,24 @@ class createDatabase
         $dotenv = Envloader::createImmutable(__DIR__ . '/..');
         $dotenv->load();
         $this->database = $_ENV['DB_NAME'];
-
         $check_query = "SHOW DATABASES LIKE '{$this->database}'";
         $result = $conn->conn->query($check_query);
-
         if ($result->num_rows == 0) { 
             $create_query = "CREATE DATABASE {$this->database}";
 
             if ($conn->conn->query($create_query) === TRUE) {
-                echo "Database '{$this->database}' created successfully.<br>";
-                echo "selecting the database...<br>";
                 $conn->conn->select_db($this->database);
+                echo json_encode(["success"=>"Database '{$this->database}' created successfully.<br>"]);
+                exit();
             } else {
-                echo "Error creating database '{$this->database}': " . $conn->conn->error;
+                echo json_encode(["error"=>"Error creating database '{$this->database}': " . $conn->conn->error]);
+                exit();
             }
         } else {
-            echo "Database '{$this->database}' already exists.<br>";
-            echo "selecting the database...<br>";
             $conn->conn->select_db($this->database);
+            error_log("Database 'WebService' already exists.");
+            error_log("Selecting the database...");
         }
-
     }
 }
 

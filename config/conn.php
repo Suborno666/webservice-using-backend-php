@@ -19,7 +19,7 @@ class Connection {
         $this->conn = mysqli_connect($this->host, $this->user, $this->password);
         
         if (!$this->conn) {
-            die('Connection failed: '. mysqli_connect_error());
+            echo json_encode(['error'=>'Connection failed: '. mysqli_connect_error()]);
         }
     }
 }

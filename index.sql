@@ -1,4 +1,5 @@
--- drop database if exists `new_webservice`;
+-- drop database if exists `WebService`;
 -- show databases;
 use `WebService`;
-show Tables;
+-- show Tables;
+DESC `UserTable`;

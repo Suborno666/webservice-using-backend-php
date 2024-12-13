@@ -7,7 +7,7 @@ use Dotenv\Dotenv as Envloader;
 require_once __DIR__.'/conn.php';
 require_once __DIR__.'/../vendor/autoload.php';
 
-class createDatabase
+final class createDatabase
 {
     private $database;
 

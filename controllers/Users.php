@@ -2,14 +2,17 @@
 namespace Controller;
 
 require_once __DIR__.'/../config/conn.php';
+require __DIR__.'/status.php';
 
 use Config\Connection as Connection;
+use Status;
 
 // use Controller\Exception;
 
 $conn = new Connection();
 
-class Users{
+
+final class Users extends Status{
    private $conn;
 
    private $tableName = "UserTable";
@@ -42,6 +45,7 @@ class Users{
                         "id" => $row["id"],
                         "username" => $row["username"],
                         "email" => $row["email"],
+                        // "password" => $row["password"],
                         "createdAt" => $row["createdAt"],
                         "updatedAt" => $row["updatedAt"]
                      ];
@@ -72,6 +76,7 @@ class Users{
                      "id" => $row["id"],
                      "username" => $row["username"],
                      "email" => $row["email"],
+                     // "password" => $row["password"],
                      "createdAt" => $row["createdAt"],
                      "updatedAt" => $row["updatedAt"]
                   ];
@@ -91,16 +96,42 @@ class Users{
          if(isset($decoded_data)&& is_array($decoded_data)){
             $username = $decoded_data['username'];
             $email = $decoded_data['email'];
-            $query = "INSERT INTO $this->tableName (`username`, `email`) VALUES('$username','$email')";
-            $result = $this->conn->conn->query($query);
-            if($result){
-               $this->status(200,"User created successfully");
+            $password = $decoded_data['password']; $options = ["cost"=>12];
+            $password = password_hash($password, PASSWORD_DEFAULT, $options);
+
+            $searchUsernameQuery = "SELECT * FROM $this->tableName WHERE username = '$username'";
+
+            $searchQuery = $this->conn->conn->query($searchUsernameQuery);
+            if ($searchQuery->num_rows > 0) {
+               $this->status(409, "User already exists");
+               exit(0);
+            } else {
+                  $stmt = $this->conn->conn->prepare("INSERT INTO $this->tableName (`username`, `email`, `password`) VALUES (?, ?, ?)");
+                  $stmt->bind_param("sss", $username, $email, $password);
+                  if ($stmt->execute()) {
+                     session_start();
+
+                     $_SESSION["session_username"] = $username;
+                     $this->status(201, "User created successfully, username = {$_SESSION['session_username']}");
+                  } else {
+                     $this->status(500, "Error creating user: " . $stmt->error);
+                  }
             }
+            
          }
       } catch (\Exception $e) {
          $this->status(500, "An unexpected error occurred: " . $e->getMessage());
       }
    }
+
+   // function UpdateUser($id){
+   //    try {
+   //       header("Content Type: application/json");
+   //       $query = "";
+   //    } catch (\Exception $e) {
+   //       $this->status(500, "An unexpected error occurred: " . $e->getMessage());
+   //    }
+   // }
 
    function deleteUser($id){
       try {

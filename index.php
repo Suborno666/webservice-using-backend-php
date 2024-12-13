@@ -4,6 +4,7 @@ use Config\Connection;
 use Config\createDatabase as createDatabase;
 use Models\UserTable as userTable;
 use Controller\Users as Users;
+use Controller\Auth as Auth;
 
 require_once __DIR__.'/config/conn.php';
 require_once __DIR__.'/config/database.php';
@@ -22,6 +23,7 @@ $conn = new Connection;
 $database = new createDatabase($conn);
 
 $Users = new Users($conn);
+$Auth = new Auth($conn);
 
 switch ($method) {
     case "GET":
@@ -32,6 +34,9 @@ switch ($method) {
         }else if($serverUri === "$url_name/createTable"){
             
             $userTable = new userTable($conn);
+            if($userTable){
+                echo json_encode(["message"=>"Success"]);
+            }
         
         } else if($serverUri === "$url_name/user?id=$id"){
         
@@ -44,9 +49,18 @@ switch ($method) {
         break;
 
     case "POST":
-        if ($serverUri === "$url_name/user/one") {
+        
+        // Creating User
+        if ($serverUri === "$url_name/user/create/one") {
             $Users->createUser();
-        } else {
+        }
+
+        // Logging In
+        elseif ($serverUri === "$url_name/login") {
+            $Auth->Login();
+        } 
+        
+        else {
             echo "Invalid POST route.";
         }
         break;

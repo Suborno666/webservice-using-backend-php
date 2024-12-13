@@ -1,5 +1,6 @@
--- drop database if exists `WebService`;
+-- drop database if exists `We;bService`;
 -- show databases;
-use `WebService`;
 -- show Tables;
-DESC `UserTable`;
+-- DESC `UserTable`;
+select * from `WebService`.`UserTable`;
+DELETE From `WebService`.`UserTable` WHERE `id` = 1

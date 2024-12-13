@@ -4,7 +4,7 @@ namespace Config;
 require_once __DIR__ . '/../vendor/autoload.php';
 use Dotenv\Dotenv as Envloader;
 
-class Connection {
+final class Connection {
     private $host;
     private $user;
     private $password;

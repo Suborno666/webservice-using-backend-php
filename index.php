@@ -11,9 +11,9 @@ require_once __DIR__.'/config/database.php';
 require_once __DIR__.'/Models/userTable.php';
 require __DIR__.'/Controller_lists.php';
 
-$method = $_SERVER['REQUEST_METHOD'];
+$method    = $_SERVER['REQUEST_METHOD'];
 $serverUri = $_SERVER['REQUEST_URI'];
-$host = $_SERVER['HTTP_HOST'];
+$host      = $_SERVER['HTTP_HOST'];
 
 $id = isset($_GET['id'])?$_GET['id']:'';
 
